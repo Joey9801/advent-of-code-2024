@@ -223,4 +223,5 @@ macro_rules! define_days {
 }
 
 define_days! {
+    ("Historian Hysteria", 1, day_1)
 }
