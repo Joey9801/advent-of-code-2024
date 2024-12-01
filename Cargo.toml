@@ -1,0 +1,15 @@
+[package]
+name = "aoc_2024"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.93"
+clap = { version = "4.5.21", features = ["derive"] }
+rand = { version = "0.8.5", features = ["small_rng"] }
+reqwest = { version = "0.12.9", features = ["cookies", "blocking"] }
+
+[dev-dependencies]
+pretty_assertions = "1.4.1"
