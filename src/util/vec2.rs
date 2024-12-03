@@ -1,4 +1,3 @@
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Vec2 {
     pub x: i64,

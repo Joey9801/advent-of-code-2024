@@ -30,7 +30,7 @@ impl<Node> Eq for CostOrder<Node> {}
 
 impl<Node> PartialOrd for CostOrder<Node> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.0.cost.partial_cmp(&other.0.cost)
+        Some(self.cmp(other))
     }
 }
 
@@ -64,7 +64,7 @@ where
 
     // Wrap in a reverse as Rust's standard BinaryHeap is a max heap
     queue.push(Reverse(CostOrder(NodeAndCost {
-        node: (start.clone(), start),
+        node: (start, start),
         cost: 0,
     })));
 
@@ -79,7 +79,7 @@ where
         visited.insert(node);
 
         if node != prev_node {
-            optimal_edges.insert(node.clone(), prev_node);
+            optimal_edges.insert(node, prev_node);
         }
 
         if is_end(node) {
@@ -100,7 +100,7 @@ where
             }
 
             queue.push(Reverse(CostOrder(NodeAndCost {
-                node: (node.clone(), next_node),
+                node: (node, next_node),
                 cost: path_cost + edge_cost,
             })));
         }
@@ -108,8 +108,8 @@ where
 
     end.map(|end| {
         let mut path = vec![end.node];
-        while let Some(prev_node) = optimal_edges.get(&path.last().unwrap()) {
-            path.push(prev_node.clone());
+        while let Some(prev_node) = optimal_edges.get(path.last().unwrap()) {
+            path.push(*prev_node);
         }
         path.reverse();
 

@@ -24,7 +24,7 @@ fn main() {
             .collect();
     }
 
-    if solutions.len() == 0 {
+    if solutions.is_empty() {
         println!("No solutions match CLI opts: {:?}", &opt);
     } else {
         let results = solutions

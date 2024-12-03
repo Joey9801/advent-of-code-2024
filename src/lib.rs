@@ -72,7 +72,7 @@ where
         let p2_result = format!("{}", p2_result);
 
         RunResult {
-            name: self.name.clone(),
+            name: self.name,
             parse_time,
             p1_time,
             p2_time,
@@ -118,7 +118,7 @@ pub fn get_input(input_root: &std::path::Path, day_name: DayName) -> anyhow::Res
 }
 
 pub fn print_results_table(results: &[RunResult]) {
-    if results.len() == 0 {
+    if results.is_empty() {
         return;
     }
 
