@@ -5,15 +5,15 @@ pub struct Vec2 {
 }
 
 impl Vec2 {
-    pub fn new(x: i64, y: i64) -> Self {
+    pub const fn new(x: i64, y: i64) -> Self {
         Self { x, y }
     }
 
-    pub fn zero() -> Self {
+    pub const fn zero() -> Self {
         Self { x: 0, y: 0 }
     }
 
-    pub fn l1_norm(self) -> i64 {
+    pub const fn l1_norm(self) -> i64 {
         self.x.abs() + self.y.abs()
     }
 }
@@ -76,5 +76,16 @@ impl std::ops::Sub<Self> for &Vec2 {
 impl std::ops::SubAssign<Self> for Vec2 {
     fn sub_assign(&mut self, rhs: Self) {
         *self = *self - rhs;
+    }
+}
+
+impl std::ops::Neg for Vec2 {
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        Self {
+            x: -self.x,
+            y: -self.y,
+        }
     }
 }
