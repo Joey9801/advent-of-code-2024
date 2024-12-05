@@ -227,4 +227,5 @@ define_days! {
     ("Red-Nosed Reports", 2, day_2),
     ("Mull It Over", 3, day_3),
     ("Ceres Search", 4, day_4),
+    ("Print Queue", 5, day_5),
 }
