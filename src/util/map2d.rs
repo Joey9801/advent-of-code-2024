@@ -70,7 +70,7 @@ impl<Tile> Map2d<Tile> {
     pub fn find(&self, predicate: impl Fn(&Tile) -> bool) -> Option<Vec2> {
         self.data.iter().position(predicate).map(|i| self.pos_of(i))
     }
-    
+
     pub fn convert<OtherTile: From<Tile>>(self) -> Map2d<OtherTile> {
         Map2d {
             size: self.size,
