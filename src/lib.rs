@@ -228,4 +228,7 @@ define_days! {
     ("Mull It Over", 3, day_3),
     ("Ceres Search", 4, day_4),
     ("Print Queue", 5, day_5),
+    ("Guard Gallivant", 6, day_6),
+    ("Bridge Repair", 7, day_7),
+    ("Resonant Collinearity", 8, day_8),
 }

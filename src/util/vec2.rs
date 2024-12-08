@@ -16,6 +16,10 @@ impl Vec2 {
     pub const fn l1_norm(self) -> i64 {
         self.x.abs() + self.y.abs()
     }
+
+    pub const fn inside_map(&self, map_size: Self) -> bool {
+        self.x >= 0 && self.x < map_size.x && self.y >= 0 && self.y < map_size.y
+    }
 }
 
 impl std::ops::Mul<i64> for Vec2 {
