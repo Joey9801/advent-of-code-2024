@@ -16,7 +16,26 @@ impl Vec2 {
     pub const fn l1_norm(self) -> i64 {
         self.x.abs() + self.y.abs()
     }
+    
+    pub const fn dot(self, other: Self) -> i64 {
+        self.x * other.x + self.y * other.y
+    }
+    
+    pub const fn const_add(self, other: Self) -> Self {
+        Self {
+            x: self.x + other.x,
+            y: self.y + other.y
+        }
+    }
+    
+    pub const fn const_scalar_mul(self, mul: i64) -> Self {
+        Self {
+            x: self.x * mul,
+            y: self.y * mul
+        }
+    }
 
+    /// Is this vec2 inside a map that spans (0, 0) to `map_size`
     pub const fn inside_map(&self, map_size: Self) -> bool {
         self.x >= 0 && self.x < map_size.x && self.y >= 0 && self.y < map_size.y
     }

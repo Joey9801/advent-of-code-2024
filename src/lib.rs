@@ -231,4 +231,8 @@ define_days! {
     ("Guard Gallivant", 6, day_6),
     ("Bridge Repair", 7, day_7),
     ("Resonant Collinearity", 8, day_8),
+    ("Disk Fragmenter", 9, day_9),
+    ("Hoof It", 10, day_10),
+    ("Plutonian Pebbles", 11, day_11),
+    ("Garden Groups", 12, day_12),
 }

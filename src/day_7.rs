@@ -90,7 +90,7 @@ pub fn solve_part_1(input: &[Line]) -> i64 {
         while let Some(ops) = op_it.next() {
             if eval(&line.numbers, ops) == line.target {
                 sum += line.target;
-                continue;
+                break;
             }
         }
     }
