@@ -71,6 +71,17 @@ impl<Tile> Map2d<Tile> {
         self.data.iter().position(predicate).map(|i| self.pos_of(i))
     }
 
+    pub fn find_all<'a>(
+        &'a self,
+        predicate: impl Fn(&Tile) -> bool + 'a,
+    ) -> impl Iterator<Item = Vec2> + 'a {
+        self.data
+            .iter()
+            .enumerate()
+            .filter(move |(_idx, tile)| predicate(tile))
+            .map(|(idx, _tile)| self.pos_of(idx))
+    }
+
     pub fn convert<OtherTile: From<Tile>>(self) -> Map2d<OtherTile> {
         Map2d {
             size: self.size,
