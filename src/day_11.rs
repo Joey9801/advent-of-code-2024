@@ -27,7 +27,7 @@ fn split_digits(num: i64) -> Option<(i64, i64)> {
     }
 }
 
-fn p1_inner(num: i64, iterations: usize, memo: &mut HashMap<(i64, usize), u64>) -> u64 {
+fn eval(num: i64, iterations: usize, memo: &mut HashMap<(i64, usize), u64>) -> u64 {
     if iterations == 0 {
         return 1;
     }
@@ -36,22 +36,27 @@ fn p1_inner(num: i64, iterations: usize, memo: &mut HashMap<(i64, usize), u64>) 
         return *cached;
     }
 
-    if num == 0 {
-        p1_inner(1, iterations - 1, memo)
+    let ans = if num == 0 {
+        eval(1, iterations - 1, memo)
     } else if let Some((upper, lower)) = split_digits(num) {
-        p1_inner(upper, iterations - 1, memo) + p1_inner(lower, iterations - 1, memo)
+        eval(upper, iterations - 1, memo) + eval(lower, iterations - 1, memo)
     } else {
-        p1_inner(num * 2024, iterations - 1, memo)
-    }
+        eval(num * 2024, iterations - 1, memo)
+    };
+    
+    memo.insert((num, iterations), ans);
+
+    ans
 }
 
 pub fn solve_part_1(input: &[i64]) -> u64 {
     let mut memo: HashMap<(i64, usize), u64> = Default::default();
-    input.iter().map(|x| p1_inner(*x, 25, &mut memo)).sum()
+    input.iter().map(|x| eval(*x, 25, &mut memo)).sum()
 }
 
 pub fn solve_part_2(input: &[i64]) -> u64 {
-    0
+    let mut memo: HashMap<(i64, usize), u64> = Default::default();
+    input.iter().map(|x| eval(*x, 75, &mut memo)).sum()
 }
 
 #[cfg(test)]
