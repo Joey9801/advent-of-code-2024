@@ -69,31 +69,103 @@ pub fn parse(input: &str) -> Input {
     }
 }
 
-pub fn solve_part_1(input: &Input) -> usize {
-    let mut unique_positions = HashSet::new();
+enum GuardRoute {
+    Finite { unique_positions: HashSet<Vec2> },
+    Loop,
+}
 
-    let mut guard = input.guard;
-    unique_positions.insert(guard.pos);
+fn guard_route(map: &Map2d<Tile>, initial: Guard) -> GuardRoute {
+    let mut guard = initial;
+    let mut visited_states = HashSet::new(); // Track (position, direction)
+    let mut unique_positions = HashSet::new(); // Track all unique positions visited
 
     loop {
+        // Record the current state (position and direction)
+        if !visited_states.insert((guard.pos, guard.dir)) {
+            return GuardRoute::Loop; // Detected a loop
+        }
+
+        // Record the unique position visited
+        unique_positions.insert(guard.pos);
+
+        // Determine the next position based on the guard's direction
         let next_pos = guard.pos + guard.dir;
-        match input.tiles.get(next_pos) {
+
+        match map.get(next_pos) {
             Some(Tile::Empty) => {
                 guard.pos = next_pos;
-                unique_positions.insert(guard.pos);
             }
             Some(Tile::Wall) => {
                 guard.dir = guard.dir.rotate_right();
-            },
-            None => break,
+            }
+            None => {
+                return GuardRoute::Finite { unique_positions };
+            }
         }
     }
+}
 
+pub fn solve_part_1(input: &Input) -> usize {
+    let route = guard_route(&input.tiles, input.guard);
+    let GuardRoute::Finite { unique_positions } = route else {
+        panic!("Infinite loop in initial input")
+    };
     unique_positions.len()
 }
 
 pub fn solve_part_2(input: &Input) -> u64 {
-    0
+    let GuardRoute::Finite {
+        unique_positions: mut initial_route,
+    } = guard_route(&input.tiles, input.guard)
+    else {
+        unreachable!()
+    };
+    
+    // Remove the guard's starting position from the initial route
+    initial_route.remove(&input.guard.pos);
+
+    let mut possible_positions = 0;
+    let mut test_map = input.tiles.clone();
+
+    // Loop over all positions in the map
+    for pos in initial_route {
+        // Temporarily place a wall at this position
+        *test_map.get_mut(pos).unwrap() = Tile::Wall;
+
+        // Simulate guard's movement with the obstruction
+        let mut guard = input.guard;
+        let mut visited_states = HashSet::new();
+        let mut is_loop = false;
+
+        loop {
+            // Check if the current state has been visited before
+            if !visited_states.insert((guard.pos, guard.dir)) {
+                is_loop = true;
+                break;
+            }
+
+            let next_pos = guard.pos + guard.dir;
+            match test_map.get(next_pos) {
+                Some(Tile::Empty) => {
+                    guard.pos = next_pos;
+                }
+                Some(Tile::Wall) => {
+                    guard.dir = guard.dir.rotate_right();
+                }
+                None => break,
+            }
+        }
+
+        // If a loop is found, count this obstruction position as valid
+        if is_loop {
+            possible_positions += 1;
+        }
+
+        // Reset the test map
+        *test_map.get_mut(pos).unwrap() = Tile::Empty;
+    }
+
+    possible_positions
 }
 
 #[cfg(test)]
@@ -110,13 +182,13 @@ mod tests {
 ........#.
 #.........
 ......#..."#;
-    
+
     #[test]
     fn test_part_1() {
         let input = parse(TEST_INPUT);
         assert_eq!(solve_part_1(&input), 41);
     }
-    
+
     #[test]
     fn test_part_2() {
         let input = parse(TEST_INPUT);
