@@ -235,5 +235,6 @@ define_days! {
     ("Hoof It", 10, day_10),
     ("Plutonian Pebbles", 11, day_11),
     ("Garden Groups", 12, day_12),
+    ("Claw Contraption", 13, day_13),
     ("Restroom Redoubt", 14, day_14),
 }

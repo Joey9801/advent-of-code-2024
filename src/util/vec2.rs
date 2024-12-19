@@ -1,7 +1,13 @@
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Vec2 {
     pub x: i64,
     pub y: i64,
+}
+
+impl std::fmt::Debug for Vec2 {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Vec2({}, {})", self.x, self.y)
+    }
 }
 
 impl Vec2 {
